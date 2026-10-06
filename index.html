@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7B3654">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="My Reading">
+  <title>My Reading</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">MY READING</p>
+      <h1>Deine Bücher. Deine Stimmung.</h1>
+      <p class="muted">Bibliothek, Reading Matcher und Lesefortschritt an einem Ort.</p>
+    </div>
+    <button class="icon-btn" id="openAddBook" aria-label="Buch hinzufügen">＋</button>
+  </header>
+
+  <main class="screen active" id="home">
+    <section class="stats-grid">
+      <article class="stat"><small>Bibliothek</small><strong id="statBooks">0</strong></article>
+      <article class="stat"><small>Ungelesen</small><strong id="statUnread">0</strong></article>
+      <article class="stat"><small>Gelesen</small><strong id="statRead">0</strong></article>
+      <article class="stat"><small>Neu gelesen</small><strong><span id="statPages">0</span> S.</strong></article>
+    </section>
+
+    <section class="section">
+      <p class="eyebrow">AKTUELLES BUCH</p>
+      <article class="current-card">
+        <div>
+          <h2 id="currentTitle">Noch kein Buch ausgewählt</h2>
+          <p class="muted" id="currentMeta">Wähle ein Buch aus deiner Bibliothek.</p>
+        </div>
+        <div class="progress"><span id="progressBar"></span></div>
+        <div class="current-count"><span>Aktueller Seitenstand</span><strong><span id="currentPage">0</span> Seiten</strong></div>
+
+        <div class="entry-box">
+          <h3>Heute gelesen</h3>
+          <div class="inline-form">
+            <input id="todayPages" type="number" min="1" step="1" placeholder="z. B. 37">
+            <button class="primary" id="addTodayPages">Eintragen</button>
+          </div>
+          <p class="muted small">Heute erfasst: <strong><span id="todayTotal">0</span> Seiten</strong></p>
+          <p class="message" id="todayMessage"></p>
+        </div>
+
+        <div class="entry-box subdued">
+          <h3>Schon vor der App gelesen?</h3>
+          <p class="muted small">Hier kannst du deinen Ausgangs-Seitenstand setzen. Diese Seiten zählen nicht als neu gelesen.</p>
+          <div class="inline-form">
+            <input id="baselinePages" type="number" min="0" step="1" placeholder="z. B. 127">
+            <button class="secondary" id="setBaseline">Seitenstand setzen</button>
+          </div>
+          <p class="message" id="baselineMessage"></p>
+        </div>
+
+        <button class="finish-btn" id="finishBook">✓ Buch als gelesen markieren</button>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div><p class="eyebrow">SCHNELLSTART</p><h2>Was möchtest du tun?</h2></div>
+      </div>
+      <div class="quick-grid">
+        <button data-nav="matcher">✨<strong>Reading Matcher</strong><small>Nach Stimmung auswählen</small></button>
+        <button data-nav="library">📚<strong>Bibliothek</strong><small>Alle Bücher ansehen</small></button>
+        <button data-nav="stats">📊<strong>Lesestatistik</strong><small>Dein Fortschritt</small></button>
+        <button id="homeAddBook">＋<strong>Buch hinzufügen</strong><small>Alle Daten eintragen</small></button>
+      </div>
+    </section>
+  </main>
+
+  <main class="screen" id="matcher">
+    <div class="screen-head"><p class="eyebrow">READING MATCHER</p><h2>Was passt gerade zu dir?</h2><p class="muted">0 = vermeiden · 1 = sehr wenig · 2 = eher wenig · 3 = neutral · 4 = gerne · 5 = unbedingt</p></div>
+
+    <section class="matcher-section">
+      <div class="matcher-head"><h3>Genre</h3><small>0–5</small></div>
+      <div class="rating-grid">
+        <label class="rating-row"><span>Fantasy</span><input type="range" min="0" max="5" value="3" data-pref="genre" data-key="Fantasy"><b>3</b></label>
+        <label class="rating-row"><span>Romance</span><input type="range" min="0" max="5" value="3" data-pref="genre" data-key="Romance"><b>3</b></label>
+        <label class="rating-row"><span>Thriller</span><input type="range" min="0" max="5" value="3" data-pref="genre" data-key="Thriller"><b>3</b></label>
+      </div>
+    </section>
+
+    <section class="matcher-section">
+      <div class="matcher-head"><h3>Stimmung & Inhalt</h3><small>0–5</small></div>
+      <div class="rating-grid">
+        <label class="rating-row"><span>Spannend</span><input type="range" min="0" max="5" value="4" data-pref="mood" data-key="Spannend %"><b>4</b></label>
+        <label class="rating-row"><span>Gruselig</span><input type="range" min="0" max="5" value="3" data-pref="mood" data-key="Gruselig %"><b>3</b></label>
+        <label class="rating-row"><span>Traurig</span><input type="range" min="0" max="5" value="3" data-pref="mood" data-key="Traurig %"><b>3</b></label>
+        <label class="rating-row"><span>Herzerwärmend</span><input type="range" min="0" max="5" value="3" data-pref="mood" data-key="Herzerwärmend %"><b>3</b></label>
+        <label class="rating-row"><span>Aufwühlend</span><input type="range" min="0" max="5" value="4" data-pref="mood" data-key="Aufwühlend %"><b>4</b></label>
+        <label class="rating-row"><span>Witzig</span><input type="range" min="0" max="5" value="3" data-pref="mood" data-key="Witzig %"><b>3</b></label>
+        <label class="rating-row"><span>Romantisch</span><input type="range" min="0" max="5" value="5" data-pref="mood" data-key="Romantisch %"><b>5</b></label>
+        <label class="rating-row"><span>Erotisch / Spicy</span><input type="range" min="0" max="5" value="4" data-pref="mood" data-key="Erotisch %"><b>4</b></label>
+        <label class="rating-row"><span>Nachdenklich</span><input type="range" min="0" max="5" value="3" data-pref="mood" data-key="Nachdenklich %"><b>3</b></label>
+        <label class="rating-row"><span>Informativ</span><input type="range" min="0" max="5" value="3" data-pref="mood" data-key="Informativ %"><b>3</b></label>
+      </div>
+    </section>
+
+    <section class="matcher-section">
+      <div class="matcher-head"><h3>Handlungstempo</h3><small>0–5</small></div>
+      <div class="rating-grid">
+        <label class="rating-row"><span>Langsam</span><input type="range" min="0" max="5" value="1" data-pref="tempo" data-key="Langsam %"><b>1</b></label>
+        <label class="rating-row"><span>Moderat</span><input type="range" min="0" max="5" value="3" data-pref="tempo" data-key="Moderat % (Tempo)"><b>3</b></label>
+        <label class="rating-row"><span>Schnell</span><input type="range" min="0" max="5" value="3" data-pref="tempo" data-key="Schnell %"><b>3</b></label>
+        <label class="rating-row"><span>Wechselhaft</span><input type="range" min="0" max="5" value="3" data-pref="tempo" data-key="Wechselhaft %"><b>3</b></label>
+      </div>
+    </section>
+
+    <section class="matcher-section">
+      <div class="matcher-head"><h3>Schreibstil</h3><small>0–5</small></div>
+      <div class="rating-grid">
+        <label class="rating-row"><span>Einfach</span><input type="range" min="0" max="5" value="3" data-pref="style" data-key="Einfach % (Schreibstil)"><b>3</b></label>
+        <label class="rating-row"><span>Moderat</span><input type="range" min="0" max="5" value="3" data-pref="style" data-key="Moderat % (Schreibstil)"><b>3</b></label>
+        <label class="rating-row"><span>Anspruchsvoll</span><input type="range" min="0" max="5" value="3" data-pref="style" data-key="Anspruchsvoll % (Schreibstil)"><b>3</b></label>
+      </div>
+    </section>
+
+    <section class="matcher-section">
+      <div class="matcher-head"><h3>Zusatzfilter</h3><small>optional</small></div>
+      <div class="form-grid">
+        <label>Subgenre<select id="filterSubgenre"><option value="">egal</option></select></label>
+        <label>Anzahl<select id="recommendationCount"><option>3</option><option>5</option><option selected>10</option></select></label>
+      </div>
+      <input id="filterTrope" placeholder="Trope enthält …">
+      <div class="checks">
+        <label><input type="checkbox" id="onlyUnread" checked> nur ungelesene Bücher</label>
+        <label><input type="checkbox" id="respectSeries" checked> Reihenfolge berücksichtigen</label>
+      </div>
+    </section>
+
+    <button class="primary full matcher-submit" id="runMatcher">Bücher für meine Stimmung finden</button>
+    <p class="muted small">Gewichtung: Stimmung 65 % · Handlungstempo 20 % · Schreibstil 15 %. Genre wirkt zusätzlich auf die Sortierung.</p>
+    <div id="matcherResults" class="result-stack"></div>
+  </main>
+
+  <main class="screen" id="library">
+    <div class="screen-head">
+      <div><p class="eyebrow">BIBLIOTHEK</p><h2>Meine Bücher</h2></div>
+      <button class="primary" id="libraryAddBook">+ Buch</button>
+    </div>
+    <div class="filterbar">
+      <input id="bookSearch" placeholder="Titel, Autor, Reihe oder Trope suchen …">
+      <select id="bookStatus">
+        <option value="">alle</option>
+        <option value="ungelesen">ungelesen</option>
+        <option value="gelesen">gelesen</option>
+      </select>
+    </div>
+    <p class="muted small"><span id="libraryCount">0</span> Bücher angezeigt</p>
+    <div id="libraryList" class="book-grid"></div>
+  </main>
+
+  <main class="screen" id="stats">
+    <div class="screen-head"><p class="eyebrow">STATISTIK</p><h2>Dein Leseverlauf</h2></div>
+    <section class="stats-grid large">
+      <article class="stat"><small>Neu gelesene Seiten</small><strong id="statsPages">0</strong></article>
+      <article class="stat"><small>Heute</small><strong id="statsToday">0</strong></article>
+      <article class="stat"><small>Gelesene Bücher</small><strong id="statsFinished">0</strong></article>
+      <article class="stat"><small>Ungelesene Bücher</small><strong id="statsUnfinished">0</strong></article>
+    </section>
+    <section class="section">
+      <p class="eyebrow">LETZTE TAGE</p>
+      <div id="dailyHistory" class="history"></div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="bookModal" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <div><p class="eyebrow">BUCH HINZUFÜGEN</p><h2>Alle Buchdaten</h2></div>
+        <button class="icon-btn" id="closeBookModal">✕</button>
+      </div>
+      <p class="muted small">Die Felder entsprechen der Struktur deiner bisherigen Buch-Tabelle.</p>
+      <form id="bookForm" class="book-form"></form>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav active" data-nav="home"><span>⌂</span><small>Home</small></button>
+    <button class="nav" data-nav="matcher"><span>✨</span><small>Matcher</small></button>
+    <button class="nav add" id="navAdd"><span>＋</span></button>
+    <button class="nav" data-nav="library"><span>▤</span><small>Bibliothek</small></button>
+    <button class="nav" data-nav="stats"><span>◌</span><small>Stats</small></button>
+  </nav>
+</div>
+
+<script src="books-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
