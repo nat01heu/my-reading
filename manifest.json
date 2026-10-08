@@ -6,12 +6,17 @@
   "display": "standalone",
   "background_color": "#F6F1EB",
   "theme_color": "#7B3654",
+  "description": "Persönliche Buchbibliothek mit Reading Matcher, Reihenlogik und Lesefortschritt.",
   "icons": [
     {
-      "src": "ChatGPT-Bild 6. Okt. 2026, 20_54_29.png",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
-  "description": "Persönliche Buchbibliothek mit Reading Matcher, Reihenlogik und Lesefortschritt."
 }
